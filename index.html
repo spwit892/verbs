@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#ff6b9d">
+<title>Verb Voyage 🚂 — by Awais</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Baloo+2:wght@600;700;800&family=Quicksand:wght@500;600;700&family=Noto+Nastaliq+Urdu:wght@500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{overscroll-behavior:none;overflow:hidden}
+body{
+  font-family:'Quicksand',sans-serif;
+  min-height:100dvh;
+  background:
+    radial-gradient(circle at 15% 10%, #ffd166 0%, transparent 35%),
+    radial-gradient(circle at 85% 15%, #48dbfb 0%, transparent 35%),
+    radial-gradient(circle at 80% 90%, #ff6b9d 0%, transparent 40%),
+    radial-gradient(circle at 10% 85%, #1dd1a1 0%, transparent 40%),
+    linear-gradient(135deg,#a259ff 0%,#ff6b9d 50%,#feca57 100%);
+  background-attachment:fixed;
+  padding:max(8px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left));
+  display:flex;align-items:center;justify-content:center;
+  color:#2d1b69;
+}
+.book{
+  width:100%;max-width:560px;
+  height:calc(100dvh - 16px);
+  background:#fff;
+  border-radius:28px;
+  box-shadow:0 25px 60px rgba(44,18,105,.45),0 0 0 6px rgba(255,255,255,.25);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+  position:relative;
+  border:4px solid #fff;
+}
+.header{
+  padding:14px 18px;
+  background:linear-gradient(135deg,#ff6b9d 0%,#feca57 50%,#48dbfb 100%);
+  color:#fff;
+  display:flex;align-items:center;gap:10px;
+  border-bottom:3px dashed rgba(255,255,255,.55);
+}
+.header .emoji{font-size:1.8rem;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}
+.header h1{font-family:'Baloo 2',sans-serif;font-size:1.25rem;letter-spacing:.5px;text-shadow:0 2px 4px rgba(0,0,0,.25);flex:1;line-height:1.1}
+.header .sub{font-size:.7rem;opacity:.95;font-weight:600}
+.page-wrap{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;position:relative}
+.page{padding:18px 16px 24px;display:none;animation:fadeIn .45s ease;min-height:100%}
+.page.active{display:flex;flex-direction:column}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+/* Cover / End */
+.cover,.end{
+  flex:1;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;gap:18px;padding:20px;
+}
+.cover .big,.end .big{font-size:5rem;animation:bounce 2s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-12px) rotate(5deg)}}
+.cover h2,.end h2{font-family:'Baloo 2',sans-serif;font-size:2rem;background:linear-gradient(135deg,#ff6b9d,#a259ff,#48dbfb);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.1}
+.cover p,.end p{font-size:1rem;color:#5b3fb3;font-weight:600;max-width:320px;line-height:1.4}
+.badge{
+  background:linear-gradient(135deg,#ffd166,#ff9f43);
+  color:#2d1b69;font-weight:700;padding:10px 20px;border-radius:999px;
+  box-shadow:0 6px 18px rgba(255,159,67,.5);
+  font-family:'Baloo 2',sans-serif;
+}
+.awais{
+  font-family:'Baloo 2',sans-serif;
+  font-size:1.4rem;
+  background:linear-gradient(135deg,#ff6b9d,#a259ff);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  font-weight:800;
+}
+.start-btn{
+  margin-top:10px;
+  background:linear-gradient(135deg,#1dd1a1,#48dbfb);
+  color:#fff;border:none;
+  font-family:'Baloo 2',sans-serif;font-size:1.2rem;font-weight:800;
+  padding:14px 32px;border-radius:999px;cursor:pointer;
+  box-shadow:0 6px 0 #0fa78a,0 10px 22px rgba(29,209,161,.45);
+}
+.start-btn:active{transform:translateY(3px);box-shadow:0 2px 0 #0fa78a}
+
+/* Verb page */
+.rule-card{
+  background:linear-gradient(135deg,#fff3b0,#ffe5ec);
+  border:3px solid #ff6b9d;
+  border-radius:22px;
+  padding:12px 14px;
+  margin-bottom:14px;
+  text-align:center;
+  box-shadow:0 6px 0 #ff6b9d33;
+}
+.rule-card .num-pill{
+  display:inline-block;background:linear-gradient(135deg,#a259ff,#ff6b9d);
+  color:#fff;font-family:'Baloo 2',sans-serif;font-weight:800;
+  padding:4px 14px;border-radius:999px;font-size:.85rem;margin-bottom:4px;
+}
+.rule-card h3{font-family:'Baloo 2',sans-serif;color:#6c4cf1;font-size:1rem;font-weight:700}
+
+.verb-hero{
+  background:linear-gradient(135deg,#fff,#fef9ff);
+  border-radius:24px;
+  padding:18px 16px;
+  text-align:center;
+  border:4px solid #a259ff;
+  box-shadow:0 6px 0 #a259ff44,0 12px 24px rgba(108,76,241,.18);
+  margin-bottom:14px;
+}
+.verb-emoji{font-size:4rem;line-height:1;display:block;margin-bottom:6px;animation:wiggle 2.5s ease-in-out infinite}
+@keyframes wiggle{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+.verb-main{
+  font-family:'Baloo 2',sans-serif;font-size:2.4rem;font-weight:800;
+  background:linear-gradient(135deg,#ff6b9d,#a259ff,#48dbfb);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  line-height:1.1;
+}
+.verb-urdu{
+  font-family:'Noto Nastaliq Urdu',serif;
+  color:#6c4cf1;font-size:1.5rem;margin-top:8px;direction:rtl;line-height:1.5;
+}
+
+.form-card{
+  background:#fff;border-radius:18px;
+  padding:12px 14px;margin-bottom:10px;
+  border:3px solid;
+  box-shadow:0 4px 0 rgba(0,0,0,.06);
+  display:grid;grid-template-columns:auto 1fr;gap:10px 12px;align-items:center;
+}
+.form-card.f1{border-color:#1dd1a1;background:linear-gradient(135deg,#e8fff7,#fff)}
+.form-card.f2{border-color:#feca57;background:linear-gradient(135deg,#fff7d6,#fff)}
+.form-card.f3{border-color:#ff6b9d;background:linear-gradient(135deg,#ffe5ec,#fff)}
+.label{
+  font-family:'Baloo 2',sans-serif;font-size:.7rem;font-weight:800;
+  color:#fff;padding:6px 10px;border-radius:10px;text-align:center;line-height:1.1;
+  min-width:74px;
+}
+.f1 .label{background:#1dd1a1}
+.f2 .label{background:#feca57;color:#5b3a00}
+.f3 .label{background:#ff6b9d}
+.word-eng{
+  font-family:'Fredoka',sans-serif;font-weight:600;
+  color:#2d1b69;font-size:1.25rem;line-height:1.2;
+}
+
+.indicator-mini{
+  text-align:center;font-family:'Baloo 2',sans-serif;
+  color:#a259ff;font-weight:700;font-size:.8rem;margin-top:4px;
+}
+
+/* Nav */
+.nav{
+  padding:10px 14px max(10px,env(safe-area-inset-bottom));
+  background:linear-gradient(135deg,#fff,#ffe5ec);
+  display:flex;align-items:center;gap:10px;
+  border-top:3px solid #ff6b9d44;
+}
+.nbtn{
+  flex:0 0 auto;min-width:72px;min-height:46px;
+  border:none;border-radius:14px;
+  background:linear-gradient(135deg,#ff6b9d,#a259ff);
+  color:#fff;font-family:'Baloo 2',sans-serif;font-size:1rem;
+  font-weight:700;cursor:pointer;
+  box-shadow:0 4px 0 #6c4cf1,0 6px 14px rgba(108,76,241,.35);
+  transition:transform .12s;
+}
+.nbtn:active{transform:translateY(3px);box-shadow:0 1px 0 #6c4cf1}
+.nbtn:disabled{background:#d1c4e9;color:#fff;box-shadow:0 4px 0 #b39ddb;opacity:.7}
+.indicator{
+  flex:1;text-align:center;font-family:'Baloo 2',sans-serif;
+  color:#6c4cf1;font-weight:700;font-size:.95rem;
+  background:#fff;padding:10px;border-radius:14px;
+  border:2px dashed #ff6b9d;min-height:46px;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+@media (max-width:380px){
+  .header h1{font-size:1.05rem}
+  .verb-main{font-size:2rem}
+  .verb-urdu{font-size:1.3rem}
+  .word-eng{font-size:1.1rem}
+  .nbtn{min-width:64px;font-size:.9rem}
+  .label{min-width:64px;font-size:.65rem}
+}
+</style>
+</head>
+<body>
+<div class="book">
+  <div class="header">
+    <span class="emoji">🚂</span>
+    <div style="flex:1">
+      <h1>Verb Voyage</h1>
+      <div class="sub">by Awais • for my classmates 💖</div>
+    </div>
+    <span class="emoji">✨</span>
+  </div>
+  <div class="page-wrap" id="wrap"></div>
+  <div class="nav">
+    <button class="nbtn" id="prev">◀ Back</button>
+    <div class="indicator" id="ind">1 / 1</div>
+    <button class="nbtn" id="next">Next ▶</button>
+  </div>
+</div>
+
+<script>
+const VERBS = [
+ ["Be","ہونا","was / were","been","🌟"],
+ ["Call","بلانا","called","called","📞"],
+ ["Change","تبدیل کرنا","changed","changed","🔄"],
+ ["Climb","چڑھنا","climbed","climbed","🧗"],
+ ["Come","آنا","came","come","🚶"],
+ ["Cry","رونا","cried","cried","😢"],
+ ["Cut","کاٹنا","cut","cut","✂️"],
+ ["Dance","ناچنا","danced","danced","💃"],
+ ["Dig","کھودنا","dug","dug","⛏️"],
+ ["Do","کرنا","did","done","✅"],
+ ["Drink","پینا","drank","drunk","🥤"],
+ ["Dry","خشک کرنا","dried","dried","🌬️"],
+ ["Eat","کھانا","ate","eaten","🍎"],
+ ["Feed","کھانا کھلانا","fed","fed","🍼"],
+ ["Fight","لڑنا","fought","fought","🥊"],
+ ["Find","پانا","found","found","🔍"],
+ ["Finish","ختم کرنا","finished","finished","🏁"],
+ ["Flow","بہنا","flowed","flowed","🌊"],
+ ["Fly","اڑنا","flew","flown","🕊️"],
+ ["Follow","پیچھا کرنا","followed","followed","👣"],
+ ["Forget","بھولنا","forgot","forgotten","🤔"],
+ ["Get","حاصل کرنا","got","got / gotten","🎁"],
+ ["Give","دینا","gave","given","🤝"],
+ ["Go","جانا","went","gone","🚶‍♂️"],
+ ["Hear","سننا","heard","heard","👂"],
+ ["Help","مدد کرنا","helped","helped","🤲"],
+ ["Hide","چھپانا","hid","hidden","🙈"],
+ ["Hit","ضرب لگانا","hit","hit","🥎"],
+ ["Hold","پکڑنا","held","held","✊"],
+ ["Know","جاننا","knew","known","🧠"],
+ ["Lay","انڈے دینا / رکھنا","laid","laid","🥚"],
+ ["Leave","چھوڑنا","left","left","👋"],
+ ["Lie","لیٹنا","lay","lain","🛏️"],
+ ["Live","رہنا","lived","lived","🏠"],
+ ["Look","دیکھنا","looked","looked","👀"],
+ ["Love","محبت کرنا","loved","loved","💖"],
+ ["Make","بنانا","made","made","🔨"],
+ ["Meet","ملنا","met","met","🤝"],
+ ["Obey","حکم ماننا","obeyed","obeyed","🫡"],
+ ["Open","کھولنا","opened","opened","🚪"],
+ ["Order","حکم دینا","ordered","ordered","📋"],
+ ["Pick","اٹھانا","picked","picked","🤏"],
+ ["Play","کھیلنا","played","played","⚽"],
+ ["Pray","دعا کرنا","prayed","prayed","🙏"],
+ ["Put","رکھنا","put","put","📦"],
+ ["Ride","سوار ہونا","rode","ridden","🚴"],
+ ["Ring","بجانا","rang","rung","🔔"],
+ ["Run","دوڑنا","ran","run","🏃"],
+ ["Say","کہنا","said","said","💬"],
+ ["See","دیکھنا","saw","seen","👁️"],
+ ["Shall","چاہیے / گا، گی، گے","should","should","📝"],
+ ["Shout","چلانا","shouted","shouted","📢"],
+ ["Shut","بند کرنا","shut","shut","🚪"],
+ ["Sing","گانا","sang","sung","🎤"],
+ ["Sit","بیٹھنا","sat","sat","🪑"],
+ ["Sleep","سونا","slept","slept","😴"],
+ ["Smile","مسکرانا","smiled","smiled","😊"],
+ ["Stand","کھڑے ہونا","stood","stood","🧍"],
+ ["Start","شروع کرنا","started","started","🚦"],
+ ["Stay","ٹھہرنا","stayed","stayed","🏡"],
+ ["Swim","تیرنا","swam","swum","🏊"],
+ ["Take","لینا","took","taken","🤲"],
+ ["Talk","بات کرنا","talked","talked","🗣️"],
+ ["Teach","سکھانا","taught","taught","👩‍🏫"],
+ ["Tell","بتانا","told","told","📣"],
+ ["Think","سوچنا","thought","thought","💭"],
+ ["Walk","چلنا","walked","walked","🚶"],
+ ["Work","کام کرنا","worked","worked","💼"],
+ ["Write","لکھنا","wrote","written","✍️"]
+];
+
+const PAGES = [{kind:'cover'}, ...VERBS.map(v=>({kind:'verb',v})), {kind:'end'}];
+const wrap = document.getElementById('wrap');
+
+/* ---- Speech: pick a bright female English voice ---- */
+let femaleVoice = null;
+function pickVoice(){
+  const voices = speechSynthesis.getVoices();
+  if(!voices.length) return null;
+  const prefer = [
+    /Google US English/i, /Samantha/i, /Victoria/i, /Karen/i, /Microsoft Zira/i,
+    /Microsoft Aria/i, /Microsoft Jenny/i, /Google UK English Female/i,
+    /female/i, /Allison/i, /Ava/i
+  ];
+  for(const re of prefer){
+    const v = voices.find(v=>re.test(v.name) && /en/i.test(v.lang));
+    if(v) return v;
+  }
+  return voices.find(v=>/en/i.test(v.lang)) || voices[0];
+}
+if('speechSynthesis' in window){
+  femaleVoice = pickVoice();
+  speechSynthesis.onvoiceschanged = ()=>{ femaleVoice = pickVoice(); };
+}
+
+function speak(text){
+  if(!('speechSynthesis' in window)) return;
+  try{
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    if(femaleVoice) u.voice = femaleVoice;
+    u.lang = 'en-US';
+    u.rate = 0.82;
+    u.pitch = 1.35;
+    u.volume = 1;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+function escapeHtml(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+
+function renderPage(p,i){
+  if(p.kind==='cover'){
+    return `<div class="page" data-i="${i}" data-speech="Assalam o Alaikum dear classmates! I am Awais. Welcome to my Verb Voyage. Let us learn verbs together!">
+      <div class="cover">
+        <div class="big">🚂</div>
+        <h2>Verb Voyage!</h2>
+        <p>Assalam-o-Alaikum, dear classmates! 💖</p>
+        <p>I am <span class="awais">AWAIS</span> and this is my little gift to you — let's learn <strong>verbs</strong> together! 🎁</p>
+        <div class="badge">⭐ Grade 5 ⭐</div>
+        <button class="start-btn" id="startBtn">▶ Start the Voyage</button>
+        <p style="font-size:.8rem;opacity:.8">Tip: turn your volume up 🔊</p>
+      </div></div>`;
+  }
+  if(p.kind==='end'){
+    return `<div class="page" data-i="${i}" data-speech="Shabash my dear friends! You finished the Verb Voyage. I am so proud of you. Lots of love from Awais!">
+      <div class="end">
+        <div class="big">🏆</div>
+        <h2>Shabash, Friends!</h2>
+        <p>You finished the whole <strong>Verb Voyage</strong>! 🎉</p>
+        <p>Thank you for learning with me. You are all <strong>superstars</strong> ⭐</p>
+        <p>Lots of love,<br><span class="awais">— AWAIS 💖</span></p>
+        <div class="badge" style="background:linear-gradient(135deg,#1dd1a1,#48dbfb);color:#fff">🎓 Great Job! 🎓</div>
+      </div></div>`;
+  }
+  const [eng,urdu,past,pp,em] = p.v;
+  const speech = `${eng}. ${past}. ${pp}.`;
+  return `<div class="page" data-i="${i}" data-speech="${escapeHtml(speech)}">
+    <div class="rule-card">
+      <div class="num-pill">Verb ${i} of ${VERBS.length}</div>
+      <h3>Say it • Read it • Remember it</h3>
+    </div>
+    <div class="verb-hero">
+      <span class="verb-emoji">${em}</span>
+      <div class="verb-main">${escapeHtml(eng)}</div>
+      <div class="verb-urdu">${urdu}</div>
+    </div>
+    <div class="form-card f1">
+      <span class="label">Present</span>
+      <span class="word-eng">${escapeHtml(eng)}</span>
+    </div>
+    <div class="form-card f2">
+      <span class="label">Past</span>
+      <span class="word-eng">${escapeHtml(past)}</span>
+    </div>
+    <div class="form-card f3">
+      <span class="label">Past<br>Participle</span>
+      <span class="word-eng">${escapeHtml(pp)}</span>
+    </div>
+  </div>`;
+}
+
+wrap.innerHTML = PAGES.map(renderPage).join('');
+const pageEls = [...wrap.querySelectorAll('.page')];
+let cur = 0;
+const prev = document.getElementById('prev');
+const next = document.getElementById('next');
+const ind = document.getElementById('ind');
+let unlocked = false;
+
+function speakPage(i){
+  if(!unlocked) return;
+  const el = pageEls[i];
+  const text = el?.dataset?.speech;
+  if(text) setTimeout(()=>speak(text), 220);
+}
+
+function show(i){
+  cur = Math.max(0,Math.min(pageEls.length-1,i));
+  pageEls.forEach((el,idx)=>el.classList.toggle('active',idx===cur));
+  ind.textContent = `📖 ${cur+1} / ${pageEls.length}`;
+  prev.disabled = cur===0;
+  next.disabled = cur===pageEls.length-1;
+  wrap.scrollTop = 0;
+  speakPage(cur);
+}
+prev.onclick = ()=>show(cur-1);
+next.onclick = ()=>show(cur+1);
+
+/* Unlock audio on first user gesture (browser policy) */
+function unlock(){
+  if(unlocked) return;
+  unlocked = true;
+  try{
+    const u = new SpeechSynthesisUtterance(' ');
+    u.volume = 0; speechSynthesis.speak(u);
+  }catch(e){}
+  speakPage(cur);
+}
+document.addEventListener('click', unlock, {once:false});
+document.addEventListener('touchstart', unlock, {once:false, passive:true});
+
+document.addEventListener('click',(e)=>{
+  if(e.target && e.target.id==='startBtn'){ show(1); }
+});
+
+/* Swipe */
+let sx=0;
+wrap.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+wrap.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-sx;
+  if(Math.abs(dx)>60){ show(cur + (dx<0?1:-1)); }
+});
+
+show(0);
+/* Try auto-speak on load (works on desktop; mobile waits for first tap) */
+window.addEventListener('load', ()=>{ unlocked = true; speakPage(0); });
+</script>
+</body>
+</html>
